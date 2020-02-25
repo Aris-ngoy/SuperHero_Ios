@@ -22,21 +22,21 @@ struct CardView: View {
                 VStack(alignment: .leading) {
                     Text(title)
                         .font(.headline)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.gray)
                     Text(subTitle)
                         .font(.title)
                         .fontWeight(.black)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                         .lineLimit(3)
                     Text(extraText.uppercased())
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.gray)
                 }
                 .layoutPriority(100)
                 Spacer()
             }
             .padding()
-            .background(Color.black.opacity(0.7))
+            .background(Color.black.opacity(0.8))
         }
         .cornerRadius(10)
         .overlay(

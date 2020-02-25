@@ -11,23 +11,34 @@ import SwiftUI
 struct SearchView:View{
     
     @State private var searchText : String = ""
+    @State private var showingAlert = false
+    @State private var IsLoading : Bool = false
     
     @ObservedObject var Api = DataApi()
     
     var body: some View{
             VStack {
-                SearchBar(searchText: $searchText)
+                SearchBar(text: $searchText)
+                 .padding(.horizontal)
                 Button(action:{
-                    self.Api.SearchByName(name: self.searchText)
+                    if self.searchText.isEmpty{
+                        self.showingAlert = true
+                    }else{
+                        self.Api.SearchByName(name: self.searchText)
+                    }
                 })
                 {
-                    Text("SEARCH")
-                    .accentColor(Color.white)
-                    .padding()
-                    .frame(width: 340, height: 40, alignment: .center)
-                    .background(Color.purple)
+                    VStack{
+                        Text(Api.IsLoading == true ? "Loading ..." : "SEARCH")
+                         .accentColor(Color.white)
+                         .frame(minWidth: 0,maxWidth: .infinity, minHeight: 0, maxHeight: 50.0)
+                        .background(Color.purple)
+                    }.padding(.horizontal)
+                    
                 }
-                
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Warning !!!"), message: Text("Please Type your SuperHero's name to continue ..."), dismissButton: .default(Text("continue")))
+                }
                 List(Api.SuperHeroList, id: \.id) { item in
                        VStack(alignment: .leading) {
                         NavigationLink(destination: DetailView(SuperHero: item)){
@@ -35,7 +46,9 @@ struct SearchView:View{
                         }
                     }
                 }
+                
             }.navigationBarTitle("Search",displayMode: .inline)
+            
         }
     
 }

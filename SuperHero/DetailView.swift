@@ -7,8 +7,9 @@
 //
 
 struct Data{
-    var name: String
-    var id: String
+    var id = UUID()
+    var title: String
+    var value: String
 }
 
 import SwiftUI
@@ -16,6 +17,8 @@ import SwiftUI
 struct DetailView: View{
     
     var SuperHero: SuperHeroModel
+    
+    @State private var AppearanceList = [Data]()
         
     var body: some View{
         ScrollView{
@@ -41,6 +44,8 @@ struct DetailView: View{
                             .fontWeight(.black)
                             .foregroundColor(.primary)
                             .lineLimit(3)
+                            .multilineTextAlignment(.leading)
+                            .frame(width: 200,alignment: .leading)
                         Text(SuperHero.biography.publisher.uppercased())
                             .font(.caption)
                             .foregroundColor(.secondary)
@@ -64,12 +69,41 @@ struct DetailView: View{
                     }
                 }
                
-            
+                Text("APPEARANCE")
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.primary)
+                .lineLimit(3)
+                
+                ForEach(AppearanceList, id: \.id) { result in
+                    VStack{
+                        HStack{
+                            Text(result.title.uppercased())
+                             .font(.headline)
+                             .foregroundColor(.primary)
+                            Spacer()
+                            Text(result.value)
+                             .font(.headline)
+                             .foregroundColor(.secondary)
+                        }
+                        Divider()
+                    }.padding(.vertical)
+                }
+            }
                 
                 
             }.navigationBarTitle(SuperHero.name)
             .padding()
-            
+            .onAppear(){
+                let app = Mirror(reflecting: self.SuperHero.appearance)
+                for (label, value) in app.children {
+                    if("\(value)" != "null" || "\(value)" != "-"){
+                        let valData = Data(title: label!, value: "\(value)")
+                        self.AppearanceList.append(valData)
+                        print(self.AppearanceList.count)
+                    }
+                }
+            }
         }
     }
-}
+
