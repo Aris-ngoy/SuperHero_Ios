@@ -152,6 +152,8 @@ struct DetailView: View{
                 self.SetPowerSets()
                 self.SetAppearance()
                 self.SetBiographies()
+                self.SetWork()
+                self.SetConnections()
             }
         }
     }
@@ -162,30 +164,43 @@ struct DetailViewItem:View {
     var ListItens:[Data]
     var title:String
     
+    @State var IsCollapsed:Bool = false
+    
     var body : some View{
         VStack(alignment:.leading){
-            Text(title)
-            .font(.title)
-            .fontWeight(.black)
-            .foregroundColor(.primary)
-            .lineLimit(3)
-            .padding()
             
-            ForEach(ListItens, id: \.id) { result in
-                VStack{
-                    HStack{
-                        Text(result.title.uppercased())
-                         .font(.headline)
-                         .foregroundColor(.secondary)
-                        Spacer()
-                        Text(result.value)
-                         .font(.headline)
-                         .foregroundColor(.secondary)
-                         .multilineTextAlignment(.trailing)
-                         .frame(width: 150,alignment: .trailing)
-                    }
-                    Divider()
-                }.padding(.vertical)
+            Button(action: {
+                withAnimation {
+                    self.IsCollapsed.toggle()
+                }
+            }){
+                Text(title)
+                .font(.title)
+                .fontWeight(.black)
+                .foregroundColor(.primary)
+                .lineLimit(3)
+                .padding()
+                
+            }
+            
+           if IsCollapsed {
+                ForEach(ListItens, id: \.id) { result in
+                    VStack{
+                        HStack{
+                            Text(result.title.uppercased())
+                             .font(.headline)
+                             .foregroundColor(.secondary)
+                            Spacer()
+                            Text(result.value)
+                             .font(.headline)
+                             .foregroundColor(.secondary)
+                             .multilineTextAlignment(.trailing)
+                             .frame(width: 150,alignment: .trailing)
+                        }
+                        Divider()
+                    }.padding(.vertical)
+                        
+                }.transition(.move(edge: .bottom)).animation(.default)
             }
         }
     }

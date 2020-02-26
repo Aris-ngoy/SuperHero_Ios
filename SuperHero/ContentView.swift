@@ -9,7 +9,7 @@ struct ContentView: View {
             GeometryReader { geometry in
                 VStack(alignment:.center){
                     VStack{
-                      Text("SUPERHERO")
+                      Text("appTitle")
                        .font(.title)
                        .fontWeight(.black)
                        .foregroundColor(.primary)
@@ -19,21 +19,21 @@ struct ContentView: View {
                                Image(systemName: "magnifyingglass")
                                    .resizable()
                                    .frame(width: 20, height: 20).accentColor(Color.white)
-                               Text("SEARCH HERE").accentColor(Color.white)
+                               Text("searchTitle").accentColor(Color.white)
                                
                            }.frame(width: 300,height: 45,alignment: .center)
                            .background(Color.purple)
                        }
                     }.frame(width: geometry.size.width, height: (geometry.size.height) * 0.3)
                     VStack(){
-                        Text("Type your Superhero name")
+                        Text("welcomeTitle")
                         .padding()
                         .font(.headline)
                         .multilineTextAlignment(.center)
                         Image("illustration")
                             .resizable()
                             .frame(width: 200.0, height:150.0, alignment: .center)
-                        Text("No superhero found ! \n Type your superhero to continue...")
+                        Text("welcomeContent")
                         .padding(10)
                         .multilineTextAlignment(.center)
                     }.frame(width: geometry.size.width, height: (geometry.size.height) * 0.7)

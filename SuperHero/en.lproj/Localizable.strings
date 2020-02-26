@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  SuperHero
+
+  Created by UTS-SOFTWARE on 2020/02/26.
+  Copyright © 2020 HR. All rights reserved.
+*/
+"welcomeTitle" = "Type Your Favourite Superhero name";
+"welcomeContent" = "No superhero found ! \n Type your favourite superhero to continue...";
+"searchTitle"="SEARCH HERE";
+"appTitle"="SUPERHERO";
