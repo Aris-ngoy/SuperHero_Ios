@@ -19,6 +19,60 @@ struct DetailView: View{
     var SuperHero: SuperHeroModel
     
     @State private var AppearanceList = [Data]()
+    @State private var BiographyList = [Data]()
+    @State private var PowersetsList = [Data]()
+    @State private var WorkList = [Data]()
+    @State private var ConnectionList = [Data]()
+    
+    func SetBiographies(){
+        let app = Mirror(reflecting: self.SuperHero.biography)
+       for (label, value) in app.children {
+           let valData = Data(title: label!, value: "\(value)")
+           if valData.value != "null"{
+               self.BiographyList.append(valData)
+           }
+       }
+    }
+    
+    func SetAppearance(){
+        let app = Mirror(reflecting: self.SuperHero.appearance)
+        for (label, value) in app.children {
+            let valData = Data(title: label!, value: "\(value)")
+            if valData.value != "null"{
+                self.AppearanceList.append(valData)
+            }
+        }
+    }
+    
+    func SetPowerSets(){
+        let app = Mirror(reflecting: self.SuperHero.powerstats)
+        for (label, value) in app.children {
+            let valData = Data(title: label!, value: "\(value)")
+            if valData.value != "null"{
+                self.PowersetsList.append(valData)
+            }
+        }
+    }
+    
+    func SetWork(){
+      let app = Mirror(reflecting: self.SuperHero.work)
+        for (label, value) in app.children {
+            let valData = Data(title: label!, value: "\(value)")
+            if valData.value != "null"{
+                self.WorkList.append(valData)
+            }
+        }
+    }
+    
+    func SetConnections(){
+        let app = Mirror(reflecting: self.SuperHero.connections)
+        for (label, value) in app.children {
+            let valData = Data(title: label!, value: "\(value)")
+            if valData.value != "null"{
+                self.ConnectionList.append(valData)
+            }
+        }
+    }
         
     var body: some View{
         ScrollView{
@@ -69,41 +123,70 @@ struct DetailView: View{
                     }
                 }
                
-                Text("APPEARANCE")
-                .font(.title)
-                .fontWeight(.black)
-                .foregroundColor(.primary)
-                .lineLimit(3)
+                DetailViewItem(
+                ListItens: PowersetsList,
+                title: "POWERSETS")
                 
-                ForEach(AppearanceList, id: \.id) { result in
-                    VStack{
-                        HStack{
-                            Text(result.title.uppercased())
-                             .font(.headline)
-                             .foregroundColor(.primary)
-                            Spacer()
-                            Text(result.value)
-                             .font(.headline)
-                             .foregroundColor(.secondary)
-                        }
-                        Divider()
-                    }.padding(.vertical)
+                DetailViewItem(
+                ListItens: BiographyList,
+                title: "BIOGRAPHY")
+                
                 }
-            }
+                
+                DetailViewItem(
+                ListItens: AppearanceList,
+                title: "APPEARANCE")
+            
+                DetailViewItem(
+                ListItens: WorkList,
+                title: "WORK")
+            
+                DetailViewItem(
+                ListItens: ConnectionList,
+                title: "CONNECTIONS")
                 
                 
             }.navigationBarTitle(SuperHero.name)
             .padding()
             .onAppear(){
-                let app = Mirror(reflecting: self.SuperHero.appearance)
-                for (label, value) in app.children {
-                    if("\(value)" != "null" || "\(value)" != "-"){
-                        let valData = Data(title: label!, value: "\(value)")
-                        self.AppearanceList.append(valData)
-                        print(self.AppearanceList.count)
-                    }
-                }
+                self.SetPowerSets()
+                self.SetAppearance()
+                self.SetBiographies()
             }
         }
     }
 
+
+struct DetailViewItem:View {
+    
+    var ListItens:[Data]
+    var title:String
+    
+    var body : some View{
+        VStack(alignment:.leading){
+            Text(title)
+            .font(.title)
+            .fontWeight(.black)
+            .foregroundColor(.primary)
+            .lineLimit(3)
+            .padding()
+            
+            ForEach(ListItens, id: \.id) { result in
+                VStack{
+                    HStack{
+                        Text(result.title.uppercased())
+                         .font(.headline)
+                         .foregroundColor(.secondary)
+                        Spacer()
+                        Text(result.value)
+                         .font(.headline)
+                         .foregroundColor(.secondary)
+                         .multilineTextAlignment(.trailing)
+                         .frame(width: 150,alignment: .trailing)
+                    }
+                    Divider()
+                }.padding(.vertical)
+            }
+        }
+    }
+}
